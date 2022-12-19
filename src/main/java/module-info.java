@@ -1,6 +1,7 @@
 module com.example.supplychainmanagementsystembyharshit {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
 
 
     opens com.example.supplychainmanagementsystembyharshit to javafx.fxml;
