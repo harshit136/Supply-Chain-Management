@@ -14,12 +14,15 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class SupplyChain extends Application {
 
     public static final int width=700, height=600, headerBar=50;
 
     Pane bodyPane=new Pane();
+    Login login=new Login();
+    ProductDetails productDetails=new ProductDetails();
     private GridPane headerBar(){
         TextField searchText=new TextField();
         Button searchButton=new Button("Search");
@@ -30,6 +33,8 @@ public class SupplyChain extends Application {
         gridPane.setVgap(5);
         gridPane.setHgap(5);
         //gridPane.setStyle("-fx-background-color: #C0C0C0");
+
+        gridPane.setAlignment(Pos.CENTER);
 
         gridPane.add(searchText,0,0);
 
@@ -51,7 +56,19 @@ public class SupplyChain extends Application {
             public void handle(ActionEvent actionEvent) {
                 String email= emailTextField.getText();
                 String password= passwordField.getText();
-                messageLabel.setText(email + " $$ " + password);
+//                messageLabel.setText(email + " $$ " + password);
+
+                try {
+                    if(login.customerLogin(email, password)){
+                        messageLabel.setText("Login Successful");
+
+                    }
+                    else{
+                        messageLabel.setText("Login Failed");
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         GridPane gridPane=new GridPane();
@@ -79,7 +96,7 @@ public class SupplyChain extends Application {
        bodyPane.setMinSize(width,height);
        bodyPane.setTranslateY(headerBar);
 
-       bodyPane.getChildren().addAll(loginPage());
+       bodyPane.getChildren().addAll(productDetails.getAllProducts());
 
        root.getChildren().addAll(headerBar(), bodyPane);
 
